@@ -1,8 +1,20 @@
 import {PrismaClient} from '@prisma/client'
+import { link } from 'fs'
+
 const prisma = new PrismaClient()
+const data = require('./schema.prisma')
+
+/*
+const express = require('express')
+const api =  express()
+
+const HOST = 'localhost'
+const PORT = 8888
+
+api.listen(PORT, () => { console.log(data) })
+*/
 
 //Metodo para criar um novo usuario
-//
 async function main() {
     await prisma.user.create({
         data: {
@@ -26,11 +38,10 @@ async function main() {
   })
   console.dir(allUsers, { depth: null })
 }
-//
+
 
 //Metodo para atualizar um post
-/*
-async function main() {
+async function mainup() {
     await prisma.user.update({
         where: {
           email: 'luca@gmail.com',
@@ -43,7 +54,7 @@ async function main() {
                 },
                 data: {
                     nota: 8,
-                    resenha: 'Muito bom!',
+                    resenha: 'Excelente filme!',
                 },
                 },
           },
@@ -58,8 +69,17 @@ async function main() {
   })
   console.dir(allUsers, { depth: null })
 }
-  */
+  //
 
+
+mainup()
+    .catch(async (e) => {
+        console.error(e)
+        process.exit(1)
+    })
+    .finally(async () => {
+        await prisma.$disconnect()
+    })
 
 main()
     .catch(async (e) => {
